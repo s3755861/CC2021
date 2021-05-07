@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Map</title>
+
+    <style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+    </style>
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        // Map option
+        var option = {
+          zoom: 8,
+          center:{ lat: -25.344, lng: 131.036 }
+    
+        } 
+        // The map, centered at Uluru
+        var map = new google.maps.Map(document.getElementById("map"), option);
+        
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({
+          position: { lat: -25.344, lng: 131.036 },
+          map: map,
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+          content:<h1>Do you want to have a free drive?</h1>
+        });
+
+        marker.addListener('click',function(){
+          infowindow.open(map, marker);
+        });
+        
+      }
+    </script>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Sdn-OA_q2brPyvGXKyrU5kcpzeEJmSY&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
