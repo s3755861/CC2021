@@ -16,8 +16,7 @@ $sdk = new Aws\Sdk([
     'credentials' => [
         'key' => 'AKIATCROGQEFQJPY6VO7',
         'secret' => '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'
-    ],
-    'endpoint' => 'localhost:8000'
+    ]
 ]);
 
 $s3 = new S3Client([
@@ -40,16 +39,16 @@ function getUrl($s3, $bucket, $key){
 
 
 
-function validateUser($dynamodb, $marshaler, $email){
+function validateUser($dynamodb, $marshaler, $username, $type){
 
     $key = $marshaler->marshalJson('
     {
-        "email": "'. $email.'" 
+        "username": "'. $username.'" 
     }
     ');
 
     $params = [
-    'TableName' => 'login',
+    'TableName' => $type,
     'Key'=> $key
     ];
 
@@ -63,17 +62,16 @@ try {
 
 }
 
-function createUser($dynamodb, $marshaler, $email, $username, $password){
+function createUser($dynamodb, $marshaler, $username, $password, $type){
  	$item = $marshaler->marshalJson('
     {
-        "email": "' . $email . '",
-        "user_name": "' . $username . '",
-        "password":"'.$password.'"
+        "username": "' . $username . '",
+        "password": "' . $password . '"
     }
 ');
 
     $params = [
-        'TableName' => 'login',
+        'TableName' => $type,
         'Item' => $item
     ];
 

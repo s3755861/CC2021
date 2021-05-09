@@ -10,7 +10,11 @@
 <table border="0">
 <tr> <td>UserName：</td> <td> <input type="text" id="username" name="username" required="required"> </td></tr> 
 <tr> <td>Password：</td> <td><input type="password" id="password" name="password" required="required"></td></tr> 
-<tr><td colspan="2" align="center" style="color:red;font-size:15px;"> <?php
+<tr><td> Type: </td>
+<td> <label><input type="radio"  name="type" value="Passenger">Passenger</label></td>
+<td> <label><input type="radio"  name="type" value="Driver">Driver</label></td>
+</tr> 
+<tr> <td colspan="2" align="center" style="color:red;font-size:15px;"> <?php
 $err = isset($_GET["err"]) ? $_GET["err"] : "";
 switch ($err) {
     case 1:
