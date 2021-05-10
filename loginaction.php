@@ -12,7 +12,10 @@ $type = isset($_POST['type']) ? $_POST['type'] : "";
 	     if($ep == $password) {
 	        session_start();
 	        $_SESSION['user'] = $username;
-	        header("Location:mainpage.html");
+	        if($type == 'Passenger'){
+	        	header("Location:passengermain.html");
+	        }else
+	        header("Location:drivermainpage.html");
 
 	     }else
 	      header("Location:index.php?err=1");
