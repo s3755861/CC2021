@@ -15,7 +15,7 @@ $type = isset($_POST['type']) ? $_POST['type'] : "";
 	        if($type == 'Passenger'){
 	        	header("Location:passengermain.html");
 	        }else
-	        header("Location:drivermainpage.html");
+	        header("Location:drivermain.html");
 
 	     }else
 	      header("Location:index.php?err=1");
