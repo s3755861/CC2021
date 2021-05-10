@@ -10,20 +10,29 @@
       }
     </style>
 
+    <?php
+    require "functions.php";
+    session_start();
+    $username = 'driver1';
+    $user = getLocation($dynamodb, $marshaler, $username);
+    $lat = $marshaler->unmarshalValue($user['lat']);
+    $lng = $marshaler->unmarshalValue($user['lng']);
+    ?>
 
     <script>
       
       function initMap() {
         
-        const uluru = { lat: -25.344, lng: 131.036 };
-        
+        var lat = <?php echo $lat;?>;
+        var lng = <?php echo $lng;?>;
+        const location = {lat: lat, lng: lng};
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 4,
-          center: uluru,
+          center: location,
         });
         
         const marker = new google.maps.Marker({
-          position: uluru,
+          position: location,
           map: map,
         });
       }
