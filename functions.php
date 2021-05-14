@@ -99,5 +99,27 @@ try {
 }
 }
 
+function getLocations($dynamodb, $marshaler){
+    $eav = $marshaler->marshalJson('
+    {
+        ":is_driving": true 
+    }
+    ');
+
+    $params = [
+    'TableName' => 'Location',
+    'FilterExpression' => 'is_driving=:is_driving',
+    'ExpressionAttributeValues'=> $eav
+    ];
+
+try {
+    $result = $dynamodb->scan($params);
+    return $result['Items'];
+} catch (DynamoDbException $e) {
+    echo "Unable to query:\n";
+    echo $e->getMessage() . "\n";
+}
+}
+
 
 ?>

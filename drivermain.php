@@ -13,7 +13,7 @@
     <?php
     require "functions.php";
     session_start();
-    $username = 'driver1';
+    $username = $_SESSION['user'];
     $user = getLocation($dynamodb, $marshaler, $username);
     $lat = $marshaler->unmarshalValue($user['lat']);
     $lng = $marshaler->unmarshalValue($user['lng']);

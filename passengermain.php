@@ -90,6 +90,18 @@
         width: 345px;
       }
     </style>
+
+    <?php
+    require "functions.php";
+    session_start();
+    $username = $_SESSION['user'];
+    $user = getLocation($dynamodb, $marshaler, $username);
+    $users = getLocations($dynamodb, $marshaler);
+    $lat = $marshaler->unmarshalValue($user['lat']);
+    $lng = $marshaler->unmarshalValue($user['lng']);
+    ?>
+
+
     <script>
       // This example adds a search box to a map, using the Google Place Autocomplete
       // feature. People can enter geographical searches. The search box will return a
@@ -185,16 +197,19 @@
         function iwClick(str){
             alert(str);
         };
+        
+         function getLocation(){
+          var arr = <?php echo json_encode($users);?>;
+          var aarr = eval(arr);
+          for(i = 0; i < aarr.length; i++){
+            var marker = new google.maps.LatLng(aarr[i]['lat'].N, aarr[i]['lng'].N);
+            addMarker2(marker,'Do you want to have a free drive?');
+        }
+        
+        };
 
-        var melbourne = new google.maps.LatLng(-37.8409,144.9464);
-        addMarker2(melbourne,'Do you want to have a free drive?');
 
-        var vcmarket = new google.maps.LatLng(-37.8070,144.9567);
-        addMarker2(vcmarket,'Do you want to have a free drive?');
-
-        var um = new google.maps.LatLng(-37.7963,144.9614);
-        addMarker2(um,'Do you want to have a free drive?');
-
+        getLocation();
 
       }
 

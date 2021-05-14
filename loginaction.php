@@ -13,9 +13,9 @@ $type = isset($_POST['type']) ? $_POST['type'] : "";
 	        session_start();
 	        $_SESSION['user'] = $username;
 	        if($type == 'Passenger'){
-	        	header("Location:passengermain.html");
+	        	header("Location:passengermain.php");
 	        }else
-	        header("Location:drivermain.html");
+	        header("Location:drivermain.php");
 
 	     }else
 	      header("Location:index.php?err=1");
