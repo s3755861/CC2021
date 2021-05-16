@@ -11,13 +11,31 @@
     </style>
 
     <?php
-    require "functions.php";
-    session_start();
-    $username = $_SESSION['user'];
-    $user = getLocation($dynamodb, $marshaler, $username);
-    $lat = $marshaler->unmarshalValue($user['lat']);
-    $lng = $marshaler->unmarshalValue($user['lng']);
+      require "functions.php";
+      session_start();
+      $username = $_SESSION['user'];
+      $user = getLocation($dynamodb, $marshaler, $username);
+      $lat = $marshaler->unmarshalValue($user['lat']);
+      $lng = $marshaler->unmarshalValue($user['lng']);
+      $trip = pendingTrip($dynamodb, $marshaler, $username);
     ?>
+      
+        <script>
+        if(<?php echo $trip;?>){
+        accept=window.confirm("A passenger wants to have a trip, do you want to help them?");
+    　　if(accept == true){
+        <?php 
+          $trip[3] = 'inprogress';
+          editTrip($trip[0], $trip[1], $trip[2], $trip[3], $trip[4], $trip[5], $trip[6], $trip[7]);
+        ?>
+        }
+    　　else{
+        <?php 
+          deleteTrip($trip[0], $trip[1]);
+        ?>
+        }　
+        }
+        </script>
 
     <script>
       
