@@ -170,6 +170,19 @@
           });
           map.fitBounds(bounds);
         });
+        //Add passenger marker
+        
+        var lat = <?php echo $lat;?>;
+        var lng = <?php echo $lng;?>;
+        var marker = new google.maps.Marker({
+          position: { lat: lat, lng: lng },
+          map: map,
+
+          icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+        });
+
+        
+
         
 
         //Add marker version 2
@@ -207,7 +220,7 @@
         }
         
         };
-
+        
 
         getLocation();
 
