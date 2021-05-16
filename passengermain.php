@@ -193,7 +193,7 @@
             position:latLng
         });
         var infowindow = new google.maps.InfoWindow({
-          content:'<h1>Do you want to have a free drive?</h1>'
+          content:'<h1>click me</h1>'
         });
 
         google.maps.event.addListener(marker,'click',function(mev){
@@ -208,7 +208,8 @@
         }
 
         function iwClick(str){
-            alert(str);
+            //alert(str);
+            result = window.confirm(str);
         };
         
          function getLocation(){
