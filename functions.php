@@ -122,10 +122,10 @@ try {
 }
 }
 
- function createTrip($driver, $passenger, $status, $startlat, $startlng, $deslat, $deslng){
+ function createTrip($driver, $passenger, $startlat, $startlng, $deslat, $deslng){
     $url = "https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip";
     $params = json_encode(
-    array('tripID' => time(), 'driver' => $driver, 'passenger' => $passenger, 'status' => $status, 'startlat' => $startlat, 
+    array('tripID' => time(), 'driver' => $driver, 'passenger' => $passenger, 'status' => 'pending', 'startlat' => $startlat, 
     'startlng' => $startlng, 'deslat' => $deslat, 'deslng' => $deslng)
     );
      
@@ -146,7 +146,6 @@ try {
 
 function editTrip($tripID, $driver, $passenger, $status, $startlat, $startlng, $deslat, $deslng){
     $url = "https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip";
-    $tripID = new time();
     $params = json_encode(
     array('tripID' => $tripID, 'driver' => $driver, 'passenger' => $passenger, 'status' => $status, 'startlat' => $startlat, 
     'startlng' => $startlng, 'deslat' => $deslat, 'deslng' => $deslng)
@@ -207,24 +206,34 @@ function editTrip($tripID, $driver, $passenger, $status, $startlat, $startlng, $
 try {
     $result = $dynamodb->scan($params);
     if(empty($result['Items'])){
-       return false;
-    }else{
-        foreach ($result['Items'] as $trip) {
-        $array[0] = $marshaler->unmarshalValue($trip['tripID']);
-        $array[1] = $marshaler->unmarshalValue($trip['driver']);
-        $array[2] = $marshaler->unmarshalValue($trip['passenger']); 
-        $array[3] = $marshaler->unmarshalValue($trip['status']); 
-        $array[4] = $marshaler->unmarshalValue($trip['startlat']); 
-        $array[5] = $marshaler->unmarshalValue($trip['startlng']);  
-        $array[6] = $marshaler->unmarshalValue($trip['deslat']); 
-        $array[7] = $marshaler->unmarshalValue($trip['deslng']);    
-    }
-        return $array;
-    }
+            return $result['Items'];
+        }else{
+            foreach ($result['Items'] as $trip) {
+                $array[0] = $marshaler->unmarshalValue($trip['tripID']);
+                $array[1] = $marshaler->unmarshalValue($trip['driver']);
+                $array[2] = $marshaler->unmarshalValue($trip['passenger']); 
+                $array[3] = $marshaler->unmarshalValue($trip['status']); 
+                $array[4] = $marshaler->unmarshalValue($trip['startlat']); 
+                $array[5] = $marshaler->unmarshalValue($trip['startlng']);  
+                $array[6] = $marshaler->unmarshalValue($trip['deslat']); 
+                $array[7] = $marshaler->unmarshalValue($trip['deslng']); 
+            }
+
+            return $array;
+        } 
 } catch (DynamoDbException $e) {
     echo "Unable to query:\n";
     echo $e->getMessage() . "\n";
 }
  }
+
+ function validate($array){
+    if (empty($array)) {
+        return -1;
+    }else{
+        return 1;
+    }
+ }
+
 
 ?>
