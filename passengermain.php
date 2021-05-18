@@ -174,11 +174,12 @@
         
         var lat = <?php echo $lat;?>;
         var lng = <?php echo $lng;?>;
+        var passengerName = <?php echo $username;?>;
         var marker = new google.maps.Marker({
           position: { lat: lat, lng: lng },
           map: map,
 
-          icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+          
         });
 
         
@@ -186,12 +187,20 @@
         
 
         //Add marker version 2
+        var uniqueId = 1;
         function addMarker2(latLng, name){
 
         var marker = new google.maps.Marker({
             map:map,
-            position:latLng
+            position:latLng,
+            icon: 'images/car-placeholder.png'
         });
+        marker.id = uniqueId;
+        uniqueId++;
+        
+
+
+
         var infowindow = new google.maps.InfoWindow({
           content:'<h1>click me</h1>'
         });
@@ -205,11 +214,21 @@
                 infowindow.open(map);
 
             });
+
         }
 
         function iwClick(str){
             //alert(str);
             result = window.confirm(str);
+            if(result)
+            {
+              $.ajax({
+              url: 'createTrip.php',
+              type: 'post',
+              data: {driver:marker.tittle, passenger:passengerName, startlat:lat, startlng:lng ,deslat:place.geometry.location.lat(),deslng:place.geometry.location.lng() },
+              dataType: 'JSON'
+              });
+            }
         };
         
          function getLocation(){
@@ -217,7 +236,9 @@
           var aarr = eval(arr);
           for(i = 0; i < aarr.length; i++){
             var marker = new google.maps.LatLng(aarr[i]['lat'].N, aarr[i]['lng'].N);
+            marker.setTitle(aarr[i]['driver'].S);
             addMarker2(marker,'Do you want to have a free drive?');
+            
         }
         
         };
