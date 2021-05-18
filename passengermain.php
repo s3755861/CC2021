@@ -109,6 +109,8 @@
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      var latitude;
+      var longitude;
       function initAutocomplete() {
         const map = new google.maps.Map(document.getElementById("map"), {
           center: { lat: -37.8, lng: 144.9666 },
@@ -140,6 +142,8 @@
           // For each place, get the icon, name and location.
           const bounds = new google.maps.LatLngBounds();
           places.forEach((place) => {
+            latitude = place.geometry.location.lat();
+            longitude = place.geometry.location.lng();
             if (!place.geometry || !place.geometry.location) {
               console.log("Returned place contains no geometry");
               return;
@@ -168,6 +172,7 @@
               bounds.extend(place.geometry.location);
             }
           });
+          
           map.fitBounds(bounds);
         });
         //Add passenger marker
@@ -217,14 +222,15 @@
             //alert(str);
             result = window.confirm(str);
             if(result)
-             var username = <?php echo $username;?>;
             {
+              var username = "<?php echo $username;?>";
               $.ajax({
               url: 'createTrip.php',
               type: 'post',
-              data: {driver:marker.tittle, passenger:username, startlat:lat, startlng:lng ,deslat:place.geometry.location.lat(),deslng:place.geometry.location.lng() },
+              data: {driver:marker.tittle, passenger:username, startlat:lat, startlng:lng ,deslat:latitude, deslng:longitude },
               dataType: 'JSON'
               });
+              //console.log(latitude);
             }
         };
         
