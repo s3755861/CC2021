@@ -94,14 +94,14 @@
     <?php
     require "functions.php";
     session_start();
-    $username = $_SESSION['user'];
-    $user = getLocation($dynamodb, $marshaler, $username);
+    $username = 'passenger1';
+    $user = getLocation($dynamodb, $marshaler, 'passenger1');
     $users = getLocations($dynamodb, $marshaler);
     $lat = $marshaler->unmarshalValue($user['lat']);
     $lng = $marshaler->unmarshalValue($user['lng']);
     ?>
 
-
+    <script src="jquery-3.6.0.min.js"></script>
     <script>
       // This example adds a search box to a map, using the Google Place Autocomplete
       // feature. People can enter geographical searches. The search box will return a
@@ -174,7 +174,7 @@
         
         var lat = <?php echo $lat;?>;
         var lng = <?php echo $lng;?>;
-        var passengerName = <?php echo $username;?>;
+
         var marker = new google.maps.Marker({
           position: { lat: lat, lng: lng },
           map: map,
@@ -187,20 +187,16 @@
         
 
         //Add marker version 2
-        var uniqueId = 1;
-        function addMarker2(latLng, name){
+        function addMarker2(latLng, name, title){
 
         var marker = new google.maps.Marker({
             map:map,
             position:latLng,
-            icon: 'images/car-placeholder.png'
+            icon: 'images/car-placeholder.png',
+            title: title
         });
-        marker.id = uniqueId;
-        uniqueId++;
+
         
-
-
-
         var infowindow = new google.maps.InfoWindow({
           content:'<h1>click me</h1>'
         });
@@ -221,11 +217,12 @@
             //alert(str);
             result = window.confirm(str);
             if(result)
+             var username = <?php echo $username;?>;
             {
               $.ajax({
               url: 'createTrip.php',
               type: 'post',
-              data: {driver:marker.tittle, passenger:passengerName, startlat:lat, startlng:lng ,deslat:place.geometry.location.lat(),deslng:place.geometry.location.lng() },
+              data: {driver:marker.tittle, passenger:username, startlat:lat, startlng:lng ,deslat:place.geometry.location.lat(),deslng:place.geometry.location.lng() },
               dataType: 'JSON'
               });
             }
@@ -236,8 +233,7 @@
           var aarr = eval(arr);
           for(i = 0; i < aarr.length; i++){
             var marker = new google.maps.LatLng(aarr[i]['lat'].N, aarr[i]['lng'].N);
-            marker.setTitle(aarr[i]['driver'].S);
-            addMarker2(marker,'Do you want to have a free drive?');
+            addMarker2(marker,'Do you want to have a free drive?', aarr[i]['username'].S);
             
         }
         
