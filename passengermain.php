@@ -208,8 +208,9 @@
 
         google.maps.event.addListener(marker,'click',function(mev){
                 var div = document.createElement('div');
+                var driverTitle = marker.getTitle();
                 div.innerHTML = name;
-                div.onclick = function(){iwClick(name)};
+                div.onclick = function(){iwClick(name,driverTitle)};
                 infowindow.setContent(div);
                 infowindow.setPosition(mev.latLng);
                 infowindow.open(map);
@@ -218,7 +219,7 @@
 
         }
 
-        function iwClick(str){
+        function iwClick(str, title){
             //alert(str);
             result = window.confirm(str);
             if(result)
@@ -227,10 +228,20 @@
               $.ajax({
               url: 'createTrip.php',
               type: 'post',
-              data: {driver:marker.tittle, passenger:username, startlat:lat, startlng:lng ,deslat:latitude, deslng:longitude },
-              dataType: 'JSON'
+              //data: {driver:title, passenger:username, startlat:lat, startlng:lng ,deslat:latitude, deslng:longitude },
+              data: {driver:'title', passenger:'username', startlat:12, startlng:12 ,deslat:12.5, deslng:12.5 },
+              dataType: 'JSON',
+              success: function (data) {
+                  console.log("success");
+                }
               });
-              //console.log(latitude);
+              /*console.log(title);
+              console.log(username);
+              console.log(lat);
+              console.log(lng);
+              console.log(latitude);
+              console.log(longitude);*/
+
             }
         };
         

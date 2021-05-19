@@ -2,7 +2,6 @@
 
 $driver = $_POST['driver'];
 $passenger = $_POST['passenger'];
-$status = $_POST['status'];
 $startlat = json_decode($_POST['startlat']);
 $startlng = json_decode($_POST['startlng']);
 $deslat = json_decode($_POST['deslat']);
