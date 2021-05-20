@@ -13,8 +13,10 @@ $type = isset($_POST['type']) ? $_POST['type'] : "";
 	        session_start();
 	        $_SESSION['user'] = $username;
 	        if($type == 'Passenger'){
+	        	isNotDriving($dynamodb, $marshaler, $username);
 	        	header("Location:passengermain.php");
 	        }else
+	        isDriving($dynamodb, $marshaler, $username);
 	        header("Location:drivermain.php");
 
 	     }else

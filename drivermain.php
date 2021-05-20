@@ -4,10 +4,27 @@
     <title>Main Page</title>
 
     <style type="text/css">
-      #map {
-        height: 400px;
-        width: 100%;
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
+
+      #map {
+        height: 100%;
+        float: left;
+        width: 80%;
+        height: 100%;
+      }
+      
+      #directions-panel {
+        height: 100%;
+        float: right;
+        width: 20%;
+        overflow: auto;
+      }
+
     </style>
 
     <?php
@@ -31,7 +48,9 @@
       
     <script src="jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-    var abc = <?php echo $boo;?>;
+    
+    function pop_up(directionsService, directionsRenderer){
+      var abc = <?php echo $boo;?>;
     if(abc == 1){
       var a = confirm("A passenger wants to have a trip, do you want to help them?");
       var arr = <?php echo $arr;?>;
@@ -75,6 +94,8 @@
       });
     }
     }
+    }
+
 
 </script>
 
@@ -99,18 +120,17 @@
           map: map,
         });
         
-        /*if(verify == 1){
+        if(verify == 1){
           pop_up(directionsService, directionsRenderer);
-        } */
+        } 
 
-        //calculateAndDisplayRoute(directionsService, directionsRenderer);
         }
       
       function calculateAndDisplayRoute(directionsService, directionsRenderer, arr) {
         const waypts = [];
-        var start = new google.maps.LatLng(-37.81744, 144.99036);
-        var waypt = new google.maps.LatLng(-37.85989, 145.04853);
-        var end = new google.maps.LatLng(-37.85719, 145.12445);
+        var start = new google.maps.LatLng(lat, lng);
+        var waypt = new google.maps.LatLng(arr[4], arr[5]);
+        var end = new google.maps.LatLng(arr[6], arr[7]);
         waypts.push({
           location: waypt,
           stopover: true,
