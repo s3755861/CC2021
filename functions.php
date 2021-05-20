@@ -170,5 +170,74 @@ try {
     }
  }
 
+ function isDriving($dynamodb, $marshaler, $username){
+    $key = $marshaler->marshalJson('
+    {
+        "username": "'. $username.'" 
+    }
+    ');
+
+
+       
+    $eav = $marshaler->marshalJson('
+    {
+        ":is_driving": true
+    }
+    ');
+
+
+    $params = [
+    'TableName' => 'Location',
+    'Key'=> $key,
+    'UpdateExpression' => 
+        'set is_driving = :is_driving',
+    'ExpressionAttributeValues'=> $eav ,
+    ];
+    
+    try {
+        $result = $dynamodb->updateItem($params);
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to get item:\n";
+        echo $e->getMessage() . "\n";
+    }
+
+    }
+ 
+ function isNotDriving($dynamodb, $marshaler, $username){
+    $key = $marshaler->marshalJson('
+    {
+        "username": "'. $username.'" 
+    }
+    ');
+
+
+       
+    $eav = $marshaler->marshalJson('
+    {
+        ":is_driving": false
+    }
+    ');
+
+
+    $params = [
+    'TableName' => 'Location',
+    'Key'=> $key,
+    'UpdateExpression' => 
+        'set is_driving = :is_driving',
+    'ExpressionAttributeValues'=> $eav ,
+    ];
+    
+    try {
+        $result = $dynamodb->updateItem($params);
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to get item:\n";
+        echo $e->getMessage() . "\n";
+    }
+
+
+
+    }
 
 ?>

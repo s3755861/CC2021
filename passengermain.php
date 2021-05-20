@@ -226,25 +226,26 @@
             {
               var username = "<?php echo $username;?>";
               $.ajax({
-              url: 'createTrip.php',
-              type: 'post',
-              //data: {driver:title, passenger:username, startlat:lat, startlng:lng ,deslat:latitude, deslng:longitude },
-              data: {driver:'title', passenger:'username', startlat:12, startlng:12 ,deslat:12.5, deslng:12.5 },
-              dataType: 'JSON',
-              success: function (data) {
-                  console.log("success");
-                }
+                 headers: {
+                    "X-Api-Key": 'blablabla',
+                    "Content-Type": "application/json"
+                },
+                crossDomain: true,
+                url: 'https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip',
+                type: 'put',
+                data: JSON.stringify({
+                        "driver": title,
+                        "passenger": username,
+                        "startlat": lat,
+                        "startlng": lng,
+                        "deslat": latitude,
+                        "deslng": longitude
+                    }),
+                dataType: 'JSON'
               });
-              /*console.log(title);
-              console.log(username);
-              console.log(lat);
-              console.log(lng);
-              console.log(latitude);
-              console.log(longitude);*/
 
             }
         };
-        
          function getLocation(){
           var arr = <?php echo json_encode($users);?>;
           var aarr = eval(arr);
