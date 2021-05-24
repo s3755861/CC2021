@@ -24,7 +24,7 @@ switch ($err) {
 } ?> </td></tr>
 <tr><td colspan="2" align="center">
 <input type="submit" id="login" name="login" value="Login"></td></tr>
-<tr> <td colspan="2" align="center"> No account yet? <a href="register.php">Sign Up!</a></td></tr> 
+<tr> <td colspan="2" align="center"> Not have an account yet? <a href="register.php">Sign Up!</a></td></tr> 
 </table>
 </form> 
 </div> 

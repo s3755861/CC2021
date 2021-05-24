@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+  background-image: url("/images/background.jpg");
+  background-size:100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+}
+
+
+.mainbody {
+  height: 450px;
+  width: 400px;
+}
+
+.middle {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.form-box {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background: rgba(0,0,0,0.2);
+  transform: translate(-50%,-50%);
+  border-radius: 20px;
+  box-shadow: 0 15px 25px rgba(0,0,0,.5);
+  opacity: 1;
+}
+
+.input-normal {
+  color: white;
+  font-size: 15px;
+  width: 220px;
+  height: 40px;
+  margin: 30px auto;
+  padding: 0;
+  text-align: center;
+  border-radius: 10px;
+  outline: none;
+  display: block;
+  transition: 0.3s;
+  border: 1px solid #e6e6e6;
+  background: transparent;
+
+}
+
+
+.btn-submit {
+  background: rgba(0,0,0,0.3);
+  box-shadow: 0 15px 25px rgba(0,0,0,.5);
+  width: 100px;
+  height: 36px;
+  margin: auto;
+  font-size: 15px;
+  border-radius: 12px;
+  text-align: center;
+  display: block;
+  transition: 0.3s;
+}
+
+.front {
+  transform: rotateY(0deg);
+}
+
+
+.back {
+  transform: rotateY(-180deg);
+}
+
+.front,
+.back {
+  position: absolute;
+  backface-visibility: hidden;
+  transition: 0.3s linear;
+}
+
+
+.middle-flip .front {
+  transform: rotateY(180deg);
+}
+
+.middle-flip .back {
+  transform: rotateY(0deg);
+}
+
+
+p {
+  font-size:15px;
+  margin: 15px auto;
+  padding: 0;
+  color: white;
+  display: block;
+  text-align: center;
+}
+a {
+  text-decoration:none;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
