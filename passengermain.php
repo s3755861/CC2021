@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Places Search Box</title>
+    <title>Passenger main page</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style type="text/css">
       /* Always set the map height explicitly to define the size of the div
@@ -88,6 +88,28 @@
 
       #target {
         width: 345px;
+      }
+      #overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 2;
+        cursor: pointer;
+      }
+      #text{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 50px;
+        color: white;
+        transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
       }
     </style>
 
@@ -183,7 +205,7 @@
         var marker = new google.maps.Marker({
           position: { lat: lat, lng: lng },
           map: map,
-
+          icon: 'https://createbucket-py.s3.us-east-2.amazonaws.com/Child_9.png'
           
         });
 
@@ -197,7 +219,7 @@
         var marker = new google.maps.Marker({
             map:map,
             position:latLng,
-            icon: 'images/car-placeholder.png',
+            icon: 'https://createbucket-py.s3.us-east-2.amazonaws.com/Car_2.png',
             title: title
         });
 
@@ -211,6 +233,7 @@
                 var driverTitle = marker.getTitle();
                 div.innerHTML = name;
                 div.onclick = function(){iwClick(name,driverTitle)};
+                //div.onclick = function(){on()};
                 infowindow.setContent(div);
                 infowindow.setPosition(mev.latLng);
                 infowindow.open(map);
@@ -225,6 +248,7 @@
             if(result)
             {
               var username = "<?php echo $username;?>";
+              var tripID = <?php echo time();?>;
               $.ajax({
                  headers: {
                     "X-Api-Key": 'blablabla',
@@ -234,8 +258,10 @@
                 url: 'https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip',
                 type: 'put',
                 data: JSON.stringify({
+                        "tripID":tripID,
                         "driver": title,
                         "passenger": username,
+                        "status":"pending",
                         "startlat": lat,
                         "startlng": lng,
                         "deslat": latitude,
@@ -243,9 +269,10 @@
                     }),
                 dataType: 'JSON'
               });
-
+              document.getElementById("overlay").style.display = "block";
             }
         };
+        
          function getLocation(){
           var arr = <?php echo json_encode($users);?>;
           var aarr = eval(arr);
@@ -273,6 +300,9 @@
       placeholder="Search Box"
     />
     <div id="map"></div>
+    <div id="overlay">
+    <div id="text">Trip in progress</div>
+    </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
