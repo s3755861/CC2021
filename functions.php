@@ -5,24 +5,11 @@ date_default_timezone_set('UTC');
 
 use Aws\DynamoDb\Exception\DynamoDbException;
 use Aws\DynamoDb\Marshaler;
-use Aws\S3\S3Client;
-use Aws\S3\Exception\S3Exception;
-
-$bucket = 's3755861-image';
 
 
 $sdk = new Aws\Sdk([
     'region'   => 'us-east-1',
     'version'  => 'latest',
-    'credentials' => [
-        'key' => 'AKIATCROGQEFQJPY6VO7',
-        'secret' => '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'
-    ]
-]);
-
-$s3 = new S3Client([
-    'region'  => 'us-east-1',
-    'version' => 'latest',
     'credentials' => [
         'key' => 'AKIATCROGQEFQJPY6VO7',
         'secret' => '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'
@@ -239,5 +226,70 @@ try {
 
 
     }
+
+  function in_progressPa($dynamodb, $marshaler, $passenger){
+    $eav = $marshaler->marshalJson('
+    {
+        ":passenger":"'.$passenger.'",
+        ":sta":"inprogress"
+    }
+    ');
+
+    $params = [
+    'TableName' => 'Trip',
+    'FilterExpression' => '#sta=:sta and passenger=:passenger',
+    'ExpressionAttributeNames'=> [ '#sta' => 'status' ],
+    'ExpressionAttributeValues'=> $eav
+    ];
+
+    try {
+    $result = $dynamodb->scan($params);
+    return $result['Items'];
+    
+} catch (DynamoDbException $e) {
+    echo "Unable to query:\n";
+    echo $e->getMessage() . "\n";
+}
+  }
+
+
+  function in_progressDr($dynamodb, $marshaler, $driver){
+    $eav = $marshaler->marshalJson('
+    {
+        ":driver":"'.$driver.'",
+        ":sta":"inprogress"
+    }
+    ');
+
+    $params = [
+    'TableName' => 'Trip',
+    'FilterExpression' => '#sta=:sta and driver=:driver',
+    'ExpressionAttributeNames'=> [ '#sta' => 'status' ],
+    'ExpressionAttributeValues'=> $eav
+    ];
+
+try {
+    $result = $dynamodb->scan($params);
+    if(empty($result['Items'])){
+            return $result['Items'];
+        }else{
+            foreach ($result['Items'] as $trip) {
+                $array[0] = $marshaler->unmarshalValue($trip['tripID']);
+                $array[1] = $marshaler->unmarshalValue($trip['driver']);
+                $array[2] = $marshaler->unmarshalValue($trip['passenger']); 
+                $array[3] = $marshaler->unmarshalValue($trip['status']); 
+                $array[4] = $marshaler->unmarshalValue($trip['startlat']); 
+                $array[5] = $marshaler->unmarshalValue($trip['startlng']);  
+                $array[6] = $marshaler->unmarshalValue($trip['deslat']); 
+                $array[7] = $marshaler->unmarshalValue($trip['deslng']); 
+            }
+
+            return $array;
+        } 
+} catch (DynamoDbException $e) {
+    echo "Unable to query:\n";
+    echo $e->getMessage() . "\n";
+}
+  }
 
 ?>

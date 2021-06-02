@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Main Page</title>
-
-    <style type="text/css">
+<style type="text/css">
       html,
       body {
         height: 100%;
@@ -19,9 +14,16 @@
       }
       
       #directions-panel {
+        position: relative;
         height: 100%;
         float: right;
         width: 20%;
+        overflow: auto;
+      }
+      
+      #right-panel {
+        position: absolute;
+        height: 20%;
         overflow: auto;
       }
 
@@ -30,79 +32,42 @@
     <?php
       require "functions.php";
       session_start();
-      $boo;
-      $arr;
-      $username = $_SESSION['user'];
-      $user = getLocation($dynamodb, $marshaler, $username);
+      $ipboo;
+      $triparr;
+      $tripboo;
+      $iparr;
+      //$username = $_SESSION['user'];
+      $user = getLocation($dynamodb, $marshaler, 'driver1');
       $lat = $marshaler->unmarshalValue($user['lat']);
       $lng = $marshaler->unmarshalValue($user['lng']);  
-      $trip = pendingTrip($dynamodb, $marshaler, 'vcdgfdh');
-      if(empty($trip)){
-        $boo = -1;
+      $trip = pendingTrip($dynamodb, $marshaler, 'john');
+      $ip = in_progressDr($dynamodb, $marshaler, 'john');
+      
+      if(empty($ip)){
+        $ipboo = -1;
+        $iparr = json_encode($ip);
       }else{
-        $boo = 1;
-        $arr = json_encode($trip);
+        $ipboo = 1;
+        $iparr = json_encode($ip);
       }
 
+      if(empty($trip)){
+        $tripboo = -1;
+        $triparr = json_encode($trip);
+      }else{
+        $tripboo = 1;
+        $triparr = json_encode($trip);
+      }
+      
     ?>
       
     <script src="jquery-3.6.0.min.js"></script>
+
     <script type="text/javascript">
-    
-    function pop_up(directionsService, directionsRenderer){
-      var abc = <?php echo $boo;?>;
-    if(abc == 1){
-      var a = confirm("A passenger wants to have a trip, do you want to help them?");
-      var arr = <?php echo $arr;?>;
-      arr[3] = "inprogress";
-    if(a){
-      $.ajax({
-         headers: {
-            "X-Api-Key": 'blablabla',
-            "Content-Type": "application/json"
-        },
-        crossDomain: true,
-        url: 'https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip',
-        type: 'put',
-        data: JSON.stringify({
-                "tripID": arr[0],
-                "driver": arr[1],
-                "passenger": arr[2],
-                "status": arr[3],
-                "startlat": arr[4],
-                "startlng": arr[5],
-                "deslat": arr[6],
-                "deslng": arr[7]
-            }),
-        dataType: 'JSON'
-      });
-      calculateAndDisplayRoute(directionsService, directionsRenderer, arr);
-    }else{
-        $.ajax({
-         headers: {
-            "X-Api-Key": 'blablabla',
-            "Content-Type": "application/json"
-        },
-        crossDomain: true,
-        url: 'https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip',
-        type: 'delete',
-        data: JSON.stringify({
-                "tripID": arr[0],
-                "driver": arr[1]
-            }),
-        dataType: 'JSON'
-      });
-    }
-    }
-    }
-
-
-</script>
-
-    <script>
       
       function initMap() {
-        var verify = <?php echo $boo;?>; 
+        var ipboo = <?php echo $ipboo;?>;
+        var iparr = <?php echo $iparr;?>;
         var lat = <?php echo $lat;?>;
         var lng = <?php echo $lng;?>;
         const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -120,13 +85,18 @@
           map: map,
         });
         
-        if(verify == 1){
-          pop_up(directionsService, directionsRenderer);
-        } 
+        if(ipboo == 1){
+          window.alert("You have an incomplete trip...")
+          calculateAndDisplayRoute(directionsService, directionsRenderer, iparr, lat, lng);
+        }else{document.getElementById("right-panel").innerHTML = "<font size='5'>Waiting for a passenger..........<font>" + "<br /><br />"+ 
+        "<input type='button' id='div_2' value='Searching' style='width:100px; height:25px'>";
+        document.getElementById("div_2").addEventListener("click", () => {
+          pop_up(directionsService, directionsRenderer, lat, lng);
+        });}
 
         }
       
-      function calculateAndDisplayRoute(directionsService, directionsRenderer, arr) {
+      function calculateAndDisplayRoute(directionsService, directionsRenderer, arr, lat, lng) {
         const waypts = [];
         var start = new google.maps.LatLng(lat, lng);
         var waypt = new google.maps.LatLng(arr[4], arr[5]);
@@ -160,6 +130,58 @@
         });
 
        }
+
+      
+       function pop_up(directionsService, directionsRenderer, lat, lng){
+          var verify = <?php echo $tripboo;?>;
+          if(verify == 1){
+            var arr = <?php echo $triparr;?>;
+            var a = confirm("A passenger wants to have a trip, do you want to help them?");
+        if(a){
+          arr[3] = "inprogress";
+          $.ajax({
+             headers: {
+                "X-Api-Key": 'blablabla',
+                "Content-Type": "application/json"
+            },
+            crossDomain: true,
+            url: 'https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip',
+            type: 'put',
+            data: JSON.stringify({
+                    "tripID": arr[0],
+                    "driver": arr[1],
+                    "passenger": arr[2],
+                    "status": arr[3],
+                    "startlat": arr[4],
+                    "startlng": arr[5],
+                    "deslat": arr[6],
+                    "deslng": arr[7]
+                }),
+            dataType: 'JSON'
+          });
+          document.getElementById("right-panel").innerHTML="";
+          calculateAndDisplayRoute(directionsService, directionsRenderer, arr, lat, lng);
+        }else{
+            $.ajax({
+             headers: {
+                "X-Api-Key": 'blablabla',
+                "Content-Type": "application/json"
+            },
+            crossDomain: true,
+            url: 'https://q7sqmxgvv6.execute-api.us-east-1.amazonaws.com/trip',
+            type: 'delete',
+            data: JSON.stringify({
+                    "tripID": arr[0],
+                    "driver": arr[1]
+                }),
+            dataType: 'JSON'
+          });
+        }
+          }else{
+            window.alert("There is no passenger......");
+          }
+          
+        }
 
 
        function completeTrip(arr){
@@ -222,7 +244,10 @@
     </script>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
+    <div id="directions-panel">
+      <div id="right-panel"></div>
+      <div id="div_1"></div>
+    </div>
     <div id="map"></div>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Sdn-OA_q2brPyvGXKyrU5kcpzeEJmSY&callback=initMap&libraries=&v=weekly"
