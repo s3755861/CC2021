@@ -1,104 +1,61 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-body {
-  background-image: url("/images/background.jpg");
-  background-size:100%;
-  font-family: 'Roboto', sans-serif;
-  font-size: 20px;
+html{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-style: sans-serif;
 }
-
-
-.mainbody {
-  height: 450px;
-  width: 400px;
+body{
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto',sans-serif;
+    margin: 0;
+    background-color: #4A374A;
 }
-
-.middle {
-  top: 50%;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
+#login{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    margin: -150px 0 0 -150px;
+    width: 300px;
+    height: 300px;
 }
-
-.form-box {
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  background: rgba(0,0,0,0.2);
-  transform: translate(-50%,-50%);
-  border-radius: 20px;
-  box-shadow: 0 15px 25px rgba(0,0,0,.5);
-  opacity: 1;
+#login h1{
+    color: #fff;
+    text-shadow:5 5 5px;
+    letter-spacing: 1px;
+    text-align: center;
 }
-
-.input-normal {
-  color: white;
-  font-size: 15px;
-  width: 220px;
-  height: 40px;
-  margin: 30px auto;
-  padding: 0;
-  text-align: center;
-  border-radius: 10px;
-  outline: none;
-  display: block;
-  transition: 0.3s;
-  border: 1px solid #e6e6e6;
-  background: transparent;
-
+h1{
+    font-size: 2em;
+    margin: 0.67em 0;
 }
-
-
-.btn-submit {
-  background: rgba(0,0,0,0.3);
-  box-shadow: 0 15px 25px rgba(0,0,0,.5);
-  width: 100px;
-  height: 36px;
-  margin: auto;
-  font-size: 15px;
-  border-radius: 12px;
-  text-align: center;
-  display: block;
-  transition: 0.3s;
+.um{
+    width: 278px;
+    height: 18px;
+    margin-bottom: 10px;
+    outline: none;
+    padding: 10px;
+    font-size: 14px;
+    color: #fff;
+    border-top: 1px solid #312E3D;
+    border-left: 1px solid #312E3D;
+    border-right: 1px solid #312E3D;
+    border-bottom: 1px solid #56536A;
+    border-radius: 4px;
+    background-color: #2D2D3F;
 }
-
-.front {
-  transform: rotateY(0deg);
-}
-
-
-.back {
-  transform: rotateY(-180deg);
-}
-
-.front,
-.back {
-  position: absolute;
-  backface-visibility: hidden;
-  transition: 0.3s linear;
-}
-
-
-.middle-flip .front {
-  transform: rotateY(180deg);
-}
-
-.middle-flip .back {
-  transform: rotateY(0deg);
-}
-
-
-p {
-  font-size:15px;
-  margin: 15px auto;
-  padding: 0;
-  color: white;
-  display: block;
-  text-align: center;
-}
-a {
-  text-decoration:none;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
+.but{
+    width: 300px;
+    min-height: 20px;
+    display: block;
+    background-color: #4a77d4;
+    border: 1px solid #3762bc;
+    color: #fff;
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
 }

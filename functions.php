@@ -20,7 +20,7 @@ $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
 
-function validateUser($dynamodb, $marshaler, $username, $type){
+function validateUser($dynamodb, $marshaler, $username){
 
     $key = $marshaler->marshalJson('
     {
@@ -29,7 +29,7 @@ function validateUser($dynamodb, $marshaler, $username, $type){
     ');
 
     $params = [
-    'TableName' => $type,
+    'TableName' => 'User',
     'Key'=> $key
     ];
 
@@ -43,7 +43,7 @@ try {
 
 }
 
-function createUser($dynamodb, $marshaler, $username, $password, $type){
+function createUser($dynamodb, $marshaler, $username, $password){
  	$item = $marshaler->marshalJson('
     {
         "username": "' . $username . '",
@@ -52,7 +52,7 @@ function createUser($dynamodb, $marshaler, $username, $password, $type){
 ');
 
     $params = [
-        'TableName' => $type,
+        'TableName' => 'User',
         'Item' => $item
     ];
 
@@ -251,6 +251,35 @@ try {
     echo $e->getMessage() . "\n";
 }
   }
+
+
+
+
+   function pendingPa($dynamodb, $marshaler, $passenger){
+    $eav = $marshaler->marshalJson('
+    {
+        ":passenger":"'.$passenger.'",
+        ":sta":"pending"
+    }
+    ');
+
+    $params = [
+    'TableName' => 'Trip',
+    'FilterExpression' => '#sta=:sta and passenger=:passenger',
+    'ExpressionAttributeNames'=> [ '#sta' => 'status' ],
+    'ExpressionAttributeValues'=> $eav
+    ];
+
+    try {
+    $result = $dynamodb->scan($params);
+    return $result['Items'];
+    
+} catch (DynamoDbException $e) {
+    echo "Unable to query:\n";
+    echo $e->getMessage() . "\n";
+}
+  }
+
 
 
   function in_progressDr($dynamodb, $marshaler, $driver){

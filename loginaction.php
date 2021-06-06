@@ -4,9 +4,9 @@ $username = isset($_POST['username']) ? $_POST['username'] : "";
 $password = isset($_POST['password']) ? $_POST['password'] : "";
 $type = isset($_POST['type']) ? $_POST['type'] : "";
     
-    $user = validateUser($dynamodb, $marshaler, $username, $type);    
+    $user = validateUser($dynamodb, $marshaler, $username);    
     if (empty($user)) {
-    	 header("Location:index.php?err=1");
+    	 header("Location:login.php?err=1");
     }else{
 	     $ep = $marshaler->unmarshalValue($user['password']);
 	     if($ep == $password) {
@@ -20,7 +20,7 @@ $type = isset($_POST['type']) ? $_POST['type'] : "";
 	        header("Location:drivermain.php");
 
 	     }else
-	      header("Location:index.php?err=1");
+	      header("Location:login.php?err=1");
 	    }
 
 

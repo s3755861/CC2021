@@ -116,16 +116,23 @@
     <?php
     require "functions.php";
     session_start();
-    $username = 'passenger1';
+    $username = 'tony';
     $user = getLocation($dynamodb, $marshaler, $username);
-    $ip = in_progressPa($dynamodb, $marshaler, $passenger);
+    $ip = in_progressPa($dynamodb, $marshaler, $username);
+    $pending = pendingPa($dynamodb, $marshaler, $username);
+    $ipboo;
+    $pendingboo;
      
+     if(empty($pending)){
+        $pendingboo = -1;
+      }else{
+        $pendingboo = 1;
+      }
+      
      if(empty($ip)){
         $ipboo = -1;
-        $iparr = json_encode($ip);
       }else{
         $ipboo = 1;
-        $iparr = json_encode($ip);
       }
       
     $users = getLocations($dynamodb, $marshaler);
@@ -294,6 +301,11 @@
         
         };
         
+        var pendingboo = <?php echo $pendingboo;?>;
+        var ipboo = <?php echo $ipboo;?>;
+        if(ipboo == 1 || pendingboo == 1){
+          document.getElementById("overlay").style.display = "block";
+        };
 
         getLocation();
 
