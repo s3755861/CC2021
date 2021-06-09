@@ -1,0 +1,27 @@
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        height: 100%;
+        float: left;
+        width: 80%;
+        height: 100%;
+      }
+      
+      #directions-panel {
+        position: relative;
+        height: 100%;
+        float: right;
+        width: 20%;
+        overflow: auto;
+      }
+      
+      #right-panel {
+        position: absolute;
+        height: 20%;
+        overflow: auto;
+      }

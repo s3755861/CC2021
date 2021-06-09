@@ -8,7 +8,7 @@ $username = isset($_POST['username']) ? $_POST['username'] : "";
     $result = validateUser($dynamodb, $marshaler, $username);
     if (empty($result)) {
     createUser($dynamodb, $marshaler, $username, $password);
-    header("Location:index.php");
+    header("Location:login.php");
     }else{
         header("Location:register.php?err=1");
     }

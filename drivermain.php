@@ -1,33 +1,8 @@
-<style type="text/css">
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      #map {
-        height: 100%;
-        float: left;
-        width: 80%;
-        height: 100%;
-      }
-      
-      #directions-panel {
-        position: relative;
-        height: 100%;
-        float: right;
-        width: 20%;
-        overflow: auto;
-      }
-      
-      #right-panel {
-        position: absolute;
-        height: 20%;
-        overflow: auto;
-      }
-
-    </style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Driver main page</title>
+    <link rel="stylesheet" type="text/css" href="dm.css"/>
 
     <?php
       require "functions.php";
@@ -36,12 +11,12 @@
       $triparr;
       $tripboo;
       $iparr;
-      //$username = $_SESSION['user'];
-      $user = getLocation($dynamodb, $marshaler, 'driver1');
+      $username = $_SESSION['user'];
+      $user = getLocation($dynamodb, $marshaler, $username);
       $lat = $marshaler->unmarshalValue($user['lat']);
       $lng = $marshaler->unmarshalValue($user['lng']);  
-      $trip = pendingTrip($dynamodb, $marshaler, 'john');
-      $ip = in_progressDr($dynamodb, $marshaler, 'john');
+      $trip = pendingTrip($dynamodb, $marshaler, $username);
+      $ip = in_progressDr($dynamodb, $marshaler, $username);
       
       if(empty($ip)){
         $ipboo = -1;
