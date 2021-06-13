@@ -225,5 +225,9 @@
     </div>
     <div id="map"></div>
   
+<script
+      src="https://maps.googleapis.com/maps/api/js?key=Your_API_Key&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
   </body>
 </html>

@@ -11,8 +11,8 @@ $sdk = new Aws\Sdk([
     'region'   => 'us-east-1',
     'version'  => 'latest',
     'credentials' => [
-        'key' => 'AKIATCROGQEFQJPY6VO7',
-        'secret' => 'n5dgqMEwyb2MWAm12BTiwkm7LVajc7jKV3TpRlAi'
+        'key' => Your_key,
+        'secret' => Your_secret
     ]
 ]);
 
