@@ -224,9 +224,6 @@
       <div id="div_1"></div>
     </div>
     <div id="map"></div>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Sdn-OA_q2brPyvGXKyrU5kcpzeEJmSY&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>
+  
   </body>
 </html>

@@ -219,9 +219,6 @@
     </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4Sdn-OA_q2brPyvGXKyrU5kcpzeEJmSY&callback=initAutocomplete&libraries=places&v=weekly"
-      async
-    ></script>
+  
   </body>
 </html>
